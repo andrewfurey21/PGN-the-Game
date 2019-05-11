@@ -2,8 +2,11 @@ let canv = document.querySelector('canvas');
 let ctx = canv.getContext('2d');
 
 
-const bg = document.getElementById('background');
+
 const grass1 = document.getElementById('grass1');
+
+const player_sprite = document.getElementById('player');
+console.log(player_sprite)
 
 /*
 possibly add an array of similar sprites for more randomness in the background
@@ -18,6 +21,8 @@ let scl = 1;
 let map1 = [];
 
 let amount = 40;
+
+let player_w = 32;
 
 for (let i = 0; i < amount; i++){
   map1[i] = new Array();
@@ -38,6 +43,11 @@ class Box {
 
     this.origX = this.x;
     this.origY = this.y;
+
+    // this.img = img;
+
+    this.cx = this.x + (scl / 2);
+    this.cy = this.y + (scl / 2);
   }
 }
 
@@ -45,7 +55,7 @@ let grid = [];
 for (let i = 0; i < map1.length; i++){
   grid[i] = new Array();
   for (let j = 0; j < map1[i].length; j++){
-    grid[i].push(new Box(i * (grass1.naturalWidth * scl), j * (grass1.naturalHeight * scl), i, j, map1[i][j]));
+    grid[i].push(new Box(i * (grass1.naturalWidth), j * (grass1.naturalHeight), i, j, map1[i][j]));
   }
 }
 
@@ -59,8 +69,8 @@ class Player {
     this.y = y;
     this.w = w;
 
-    this.yAxis = canv.height / 2;
-    this.xAxis = canv.height / 2;
+    this.yAxis = grid[0][0].y;
+    this.xAxis = grid[0][0].x;
 
     this.yMove = false;
     this.xMove = false;
@@ -69,7 +79,7 @@ class Player {
   show() {
 
     if (Math.abs(grid[0][0].x) + canv.width / 2 <= (canv.width / 2) + 100){
-      if (grid[0][0].x > -20 && this.xAxis == canv.width / 2){
+      if (grid[0][0].x > -100 && this.xAxis == canv.width / 2){
         // it is possible to move around x axis
         this.xMove = true;
       } else if (this.xAxis >= canv.width / 2){
@@ -85,7 +95,7 @@ class Player {
     }
 
     if (Math.abs(grid[0][0].y) + canv.height / 2 <= (canv.height / 2) + 100){
-      if (grid[0][0].y > -20 && this.yAxis == canv.height / 2){
+      if (grid[0][0].y > -100 && this.yAxis == canv.height / 2){
         // it is possible to move around x axis
         this.yMove = true;
       } else if (this.yAxis >= canv.width / 2){
@@ -116,17 +126,22 @@ class Player {
       this.yAxis = canv.height - this.w;
     }
 
-    rct(this.xAxis, this.yAxis, this.w, this.w, '#ff00f0');
+    //rct(this.xAxis, this.yAxis, this.w, this.w, '#ff00f0');
+    drawImg(player_sprite, this.xAxis, this.yAxis, this.w, this.w);
 
   }
 }
 
-let p = new Player(0, 0, 10);
+let p = new Player(0, 0, player_w);
 
 function rct(x, y, w, h, c){
   ctx.fillStyle = c;
   ctx.fillRect(x, y, w, h);
 }
+//
+// console.log(grass1.naturalWidth);
+// console.log(player_sprite.naturalWidth);
+
 
 animate();
 
@@ -139,9 +154,9 @@ function animate() {
     for (let j = 0; j < grid[i].length; j++){
       grid[i][j].x = -p.x + grid[i][j].origX;
       grid[i][j].y = -p.y + grid[i][j].origY;
-      if (grid[i][j].x >= -grass1.naturalWidth && grid[i][j].x <= canv.width && grid[i][j].y >= -grass1.naturalHeight && grid[i][j].y <= canv.height){
+      if (grid[i][j].x >= -1 * (grass1.naturalWidth * 2) && grid[i][j].x <= canv.width && grid[i][j].y >= -1 * (grass1.naturalHeight * 2) && grid[i][j].y <= canv.height){
         if (grid[i][j].val == 1){
-          drawImg(grass1, grid[i][j].x, grid[i][j].y, grass1.naturalWidth * scl, grass1.naturalHeight * scl);
+          drawImg(grass1, grid[i][j].x, grid[i][j].y, grass1.naturalWidth, grass1.naturalHeight);
         }
       }
     }
@@ -215,7 +230,7 @@ function onKeyPress(callback) {
     document.addEventListener('keydown', function (event) {
         var code = event.which;
 
-        if (trackedKeys[code]) {
+         if (trackedKeys[code]) {
             if (!keys[code]) {
                 keys[code] = true;
                 keysCount++;
