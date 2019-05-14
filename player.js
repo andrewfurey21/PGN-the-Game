@@ -1,7 +1,7 @@
 class Player {
   constructor(x, y, w) {
-    this.x = x;
-    this.y = y;
+    this.x = x * scl;
+    this.y = y * scl;
     this.w = w;
 
     this.inMotion = false;
