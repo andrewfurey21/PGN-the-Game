@@ -3,33 +3,79 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <title>PGN Game Developer</title>
     <style> body {
-      padding: 0;
-      margin: 0;
+      /* padding: 0;
+      margin: 0; */
     }
 
     .image-container {
       display: none;
     }
 
-    canvas {
+    /* button {
 
+    } */
+
+    p {
+      position: absolute;
+      left: 650px;
+    }
+
+    canvas {
       border: 2px solid red;
+      position: absolute;
+      margin: 0;
+      top: 30px;
+      left: 0;
     }
 
     </style>
     <div class="image-container" >
-      <img src="imageFolder/grassSprite.png" id="grass">
+      <!--======================================-->
+      <img src="imageFolder/grass.png" id="grass0">
+      <img src="imageFolder/grass1.png" id="grass1">
+      <img src="imageFolder/grass2.png" id="grass2">
+      <img src="imageFolder/grass3.png" id="grass3">
+      <img src="imageFolder/grass4.png" id="grass4">
+      <!--======================================-->
+      <img src="imageFolder/gravel.png" id="gravel">
+      <img src="imageFolder/water_block.png" id="water">
+      <!--======================================-->
+      <img src="imageFolder/brick_wall_window.png" id="brick_wall_window">
+      <img src="imageFolder/brick_wall.png" id="brick_wall">
+      <!--======================================-->
+      <img src="imageFolder/Cement_Roof_centre_east.png" id="centre_east">
+      <img src="imageFolder/Cement_Roof_centre_north.png" id="centre_north">
+      <img src="imageFolder/Cement_Roof_centre_south.png" id="centre_south">
+      <img src="imageFolder/Cement_Roof_centre_west.png" id="centre_west">
+      <!--======================================-->
+      <img src="imageFolder/Cement_Roof_corner_north_east.png" id="corner_ne">
+      <img src="imageFolder/Cement_Roof_corner_north_west.png" id="corner_nw">
+      <img src="imageFolder/Cement_Roof_corner_south_east.png" id="corner_se">
+      <img src="imageFolder/Cement_Roof_corner_south_west.png" id="corner_sw">
+      <!--======================================-->
       <img src="imageFolder/main_charachter.png" id="player">
+      <!--======================================-->
     </div>
-    <a href="https://github.com/andrewfurey21/PGN-the-Game/tree/master">Check out the code for map.js!</a>
+    <a href="https://github.com/andrewfurey21/PGN-the-Game/tree/editor-edition">Check out the code for the Editor Edition</a>
+
+    <button type="button" name="button" id="random">Randomise Map</button>
+    <button type="button" name="button" id="generate">Generate Current Map</button>
+    <button type="button" name="button" id="print">Print Current Map</button>
+    <p id="pgph">If you press print map, this will be replaced with the correct values!</p>
+
     <canvas id="canvas" width="640" height="640"></canvas>
+
     <script src="draw.js"></script>
+    <script src="EditorBox.js"></script>
     <script src="box.js"></script>
+
     <script src="player.js"></script>
     <script src="map.js"></script>
     <script src="animate.js"></script>
   </head>
   <body>
+
   </body>
 </html>
