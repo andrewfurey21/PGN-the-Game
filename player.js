@@ -1,13 +1,14 @@
 class Player {
-  constructor(x, y, w) {
-    this.x = x * scl;
-    this.y = y * scl;
+  constructor(w) {
+    this.x = 0;
+    this.y = 0;
     this.w = w;
 
     this.inMotion = false;
 
-
     this.vel = 4;
+
+    this.availableBlocks = [0, 1];
 
     this.origX = this.x;
     this.origY = this.y;
@@ -31,7 +32,6 @@ class Player {
   }
 
   show() {
-    ctx.setTransform(1, 0, 0, 1, 0, 0)
     drawImage(player_sprite, this.xAxis, this.yAxis, this.w, this.w);
   }
 
@@ -252,6 +252,94 @@ class Player {
           }
         }
       }
+    }
+  }
+
+  correctPosition(xBlock, yBlock, grid) {
+
+    if (xBlock > grid.length - 1){
+      console.error('The xBlock (argument 0) is greater than the total width of the map');
+      return;
+    } else if (yBlock > grid[0].length - 1){
+      console.error('The yBlock (argument 1) is greater than the total height of the map');
+      return;
+    } else {
+      if (xBlock <= (canv.width / 2) / this.w){
+        this.xAxis = xBlock * this.w;
+      } else if (xBlock >= (grid.length - ((canv.width / 2) / this.w))){
+        let inbetween = grid.length - (canv.width / scl);
+        let pos = (canv.width / scl - 1) - (grid.length - xBlock - 1);
+        this.xAxis = pos * scl;
+        for (let i = 0; i < grid.length; i++){
+          for (let j = 0; j < grid[i].length; j++){
+            grid[i][j].x -= inbetween * scl;
+          }
+        }
+      } else {
+        this.xAxis = canv.width / 2;
+        for (let i = 0; i < grid.length; i++){
+          for (let j = 0; j < grid[i].length; j++){
+            //grid[i][j].x -= (Math.floor((xBlock - 1) / 2) * scl);
+            grid[i][j].x -= (xBlock - ((canv.width / scl) / 2)) * scl
+          }
+        }
+      }
+
+      if (yBlock <= (canv.height / 2) / this.w){
+        this.yAxis = yBlock * this.w;
+      } else if (yBlock >= (grid[0].length - ((canv.height / 2) / this.w))){
+        let inbetween = grid[0].length - (canv.height / scl);
+        let pos = (canv.height / scl - 1) - (grid[0].length - yBlock - 1);
+        this.yAxis = pos * scl;
+        for (let i = 0; i < grid.length; i++){
+          for (let j = 0; j < grid[i].length; j++){
+            grid[i][j].y -= inbetween * scl;
+          }
+        }
+      } else {
+        this.yAxis = canv.height / 2;
+        for (let i = 0; i < grid.length; i++){
+          for (let j = 0; j < grid[i].length; j++){
+            grid[i][j].y -= (yBlock - ((canv.height / scl) / 2)) * scl
+          }
+        }
+      }
+    }
+  }
+
+  //passing in the block that your moving to
+  checkBlock(block, xdir, ydir) {
+    let fails = 0;
+    if (xdir == 1){
+      for (let i = 0; i < this.availableBlocks.length; i++){
+        if (this.xAxis + this.w == block.x && block.val != this.availableBlocks[i]){
+          fails++;
+        }
+      }
+    } else if (xdir == -1){
+      for (let i = 0; i < this.availableBlocks.length; i++){
+        if (this.xAxis - this.w == block.x && block.val != this.availableBlocks[i]){
+          fails++;
+        }
+      }
+    } else if (ydir == 1){
+      for (let i = 0; i < this.availableBlocks.length; i++){
+        if (this.yAxis - this.w == block.y && block.val != this.availableBlocks[i]){
+          fails++;
+        }
+      }
+    } else if (ydir == -1){
+      for (let i = 0; i < this.availableBlocks.length; i++){
+        if (this.yAxis - this.w == block.y && block.val != this.availableBlocks[i]){
+          fails++;
+        }
+      }
+    }
+
+    if (fails > 0){
+      return false;
+    } else {
+      return true;
     }
   }
 }
